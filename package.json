@@ -1,0 +1,31 @@
+{
+  "name": "local-events",
+  "version": "1.0.0",
+  "description": "Search for local events",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mstenzler/local-events.git"
+  },
+  "author": "Michael Stenzler",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mstenzler/local-events/issues"
+  },
+  "homepage": "https://github.com/mstenzler/local-events#readme",
+  "dependencies": {
+    "bcrypt": "^0.8.7",
+    "body-parser": "^1.15.2",
+    "ejs": "^2.4.2",
+    "eventful-node": "^1.1.1",
+    "express": "^4.14.0",
+    "express-session": "^1.13.0",
+    "method-override": "^2.3.6",
+    "mongodb": "^2.1.18",
+    "morgan": "^1.7.0",
+    "path": "^0.12.7"
+  }
+}

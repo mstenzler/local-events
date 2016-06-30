@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<% include ./partials/head %>
+<body>
+  <h1>
+  <% if(user){ %>
+    Welcome, <%= user.fname %> <%= user.lname %>
+  <% } else { %>
+    Welcome, Guest
+  <% } %>
+  </h1>
+  <div>
+    <form method="post" action="user/logout?_method=DELETE">
+      <input type="submit" value="Logout">
+    </form>
+  </div>
+</body>
+</html>
