@@ -7,9 +7,10 @@ const session         = require('express-session');
 const methodOverride  = require('method-override');
 const homeRoute       = require('./routes/home');
 const userRoute       = require('./routes/user');
+const eventRoute       = require('./routes/event');
 
 const app             = express();
-const port            = process.env.PORT || 3000;
+const port            = process.env.PORT || process.argv[2] || 3000
 
 // Adding session as a middleware
 app.use(session({
@@ -32,6 +33,7 @@ app.use('/bower_components', express.static(path.join(__dirname,'/bower_componen
 
 app.use('/', homeRoute);
 app.use('/user', userRoute);
+app.use('/event', eventRoute);
 
 app.listen(port, function() {
   console.log('Server is listening on ',port);

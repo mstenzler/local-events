@@ -1,18 +1,47 @@
 <!DOCTYPE html>
 <html>
-<% include ./partials/head %>
+  <% include ./partials/head %>
 <body>
+  <% include ./partials/header %>
+
   <h1>
-  <% if(user){ %>
-    Welcome, <%= user.fname %> <%= user.lname %>
-  <% } else { %>
-    Welcome, Guest
+  <% if(user) { %>
+   Welcome, <%= user.fname %> <% user.lname %>
+ <% } else { %> 
+  Welcome, Guest
   <% } %>
   </h1>
-  <div>
-    <form method="post" action="user/logout?_method=DELETE">
-      <input type="submit" value="Logout">
-    </form>
-  </div>
+
+ <form action="/event/search" method="post" id="eventSearchForm" >
+    <select class="browser-default" name="category">
+      <option value="" selected>Choose a category</option>
+      <% categories.forEach( function(category){ %>
+      <option value="<%=category.key%>" > <%=category.desc%></option>
+      <% }) %>
+    </select>
+    <input type="text" name="location" placeholder="Location">
+    
+     <button type="submit">Search</button>
+  </form>
+
+  <% console.log("events = ", events) %>
+  <% if (events) {  %>
+    
+    <% events.forEach(function(event) { %>
+      <div class="event-block">
+        <P class="event-title"><%= event.title %></p>
+        <p class="event-item"><%= event.start_time %> to <%= event.stop_time %></p>
+        <p class="event-item"><%- event.description %></p>
+        <p class="event-item"><%= event.venue_name %><br/>
+                            <%= event.venue_address %></p>
+
+
+      </div>
+    <% }) %>
+  <% }  else { %>
+    <h1>No Results found for this search</h1>
+    <% } %>
+
+
 </body>
 </html>

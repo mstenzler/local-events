@@ -1,0 +1,20 @@
+.header {
+  padding: 1em;
+  margin-bottom: 5px;
+  background-image: -webkit-linear-gradient(grey, lightgrey);
+  background-image: -o-linear-gradient(grey, lightgrey);
+  background-image: linear-gradient(grey, lightgrey);
+}
+
+.header li {
+  list-style-type: none;
+  display: inline;
+}
+
+.event-block {
+  width: 80%;
+  background-color: #bbdefb;
+  border-radius: 10px;
+  margin: 2em auto;
+  padding: 2em;
+}
