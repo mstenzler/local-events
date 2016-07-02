@@ -15,7 +15,7 @@ router.get('/login', function(req,res) {
 });
 
 router.post('/login', loginUser,function(req,res) {
-  console.log("Logging in. res.user = ", res.user);
+  console.log("Logging in. req.user = ", res.user);
   req.session.user = res.user;
 
   req.session.save(function(err) {
@@ -24,7 +24,7 @@ router.post('/login', loginUser,function(req,res) {
   });
 });
 
-router.delete('/logout', function(req,res) {
+router.get('/logout', function(req,res) {
   req.session.destroy(function(err) {
     res.redirect('/');
   });

@@ -1,13 +1,13 @@
-const router = require('express').Router();
+const router                    = require('express').Router();
 const { searchEvent, saveEvent, 
         getEvents, categories } = require('../models/event');
-const { loginCheck }                         = require('../lib/utils');
+const { loginCheck, passUser }  = require('../lib/utils');
 
 router.get('/json/search', searchEvent, function(req,res) {
   res.json(res.events);
 });
 
-router.get('/popular', getEvents, function(req,res) {
+router.get('/popular', passUser, getEvents, function(req,res) {
   res.render('event/popular', { events: res.eventList });
 });
 

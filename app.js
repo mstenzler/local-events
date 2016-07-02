@@ -12,6 +12,7 @@ const eventRoute       = require('./routes/event');
 const app             = express();
 const port            = process.env.PORT || process.argv[2] || 3000
 const maxAgeHours     = 24;
+const maxAge          = maxAgeHours * 3600000;
 
 app.locals.pluralize = function(num, single, plural) {
     return num + " " +(num > 1 ? plural : single);
@@ -22,7 +23,7 @@ app.use(session({
   saveUninitialized: true,
   resave: true,
   secret: 'sooopersekret',
-  cookie: {maxAge: 3600000 * maxAgeHours}
+  cookie: {maxAge: maxAge}
 }));
 
 // Adding Method override to allow our form to delete

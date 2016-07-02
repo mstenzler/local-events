@@ -1,4 +1,5 @@
 const { MongoClient } = require('mongodb');
+const { ObjectID } = require('mongodb');
 const dbConnection = 'mongodb://localhost:27017/local_events';
 const eventful_key = process.env.EVENTFUL_KEY;
 
@@ -102,6 +103,12 @@ var params = {
 function saveEvent(req, res, next) {
   MongoClient.connect(dbConnection, function(err, db) {
     //console.log("user id = ", req.session.user.id);
+
+    if (!req.session.user) {
+      throw "Trying to save event without a logged in user";
+    }
+    let userIdObject = new ObjectID(req.session.user['_id']);
+    console.log("userIdObject = ", userIdObject);
     let eventInfo = {
       '$set': {
         eventfulId: req.body.eventful_id,
@@ -114,7 +121,7 @@ function saveEvent(req, res, next) {
         venueName: req.body.venue_name,
         venueAddress: req.body.venue_address
       },
-      "$addToSet": { "rsvps" :  "4543645647" } 
+      "$addToSet": { "rsvps" : userIdObject } 
     }
    // db.collection('events').insertOne(userInfo, function(err, result) {
     db.collection('events').update({eventfulId: eventInfo.eventfulId}, eventInfo, 

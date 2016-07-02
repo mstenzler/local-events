@@ -1,8 +1,15 @@
 <nav class="header">
-  <ul>
+ <div class="nav">
+   <% if( (typeof user !== 'undefined') && user) { %>
+     Welcome, <%= user.firstName %> <% user.lastName %>
+   <% } else { %> 
+    Welcome, Guest
+    <% } %>
+  </div>
+  <ul class="nav">
     <li><a href="/">Home</a></li> 
     <li><a href="/event/popular">Popular Events</a></li>
-  <% if (typeof user != undefined) { %>
+  <% if ( (typeof user !== 'undefined') && user) { %>
      <li><a href="/user/logout?_method=DELETE">Logout</a></li>
   <% } else { %>
      <li><a href="/user/login">Login</a></li>

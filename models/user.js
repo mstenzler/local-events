@@ -14,6 +14,7 @@ function loginUser(req,res,next) {
         console.log('Can\'t find user with email ',email);
       } else  if(bcrypt.compareSync(password, user.passwordDigest)){
         res.user = user;
+        console.log("Loged in. user = ", user)
       }
       next();
     })
