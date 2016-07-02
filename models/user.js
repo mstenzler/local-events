@@ -33,8 +33,9 @@ function createUser(req, res, next) {
   function saveUser(email, hash) {
     MongoClient.connect(dbConnection, function(err, db) {
       let userInfo = {
-        fname: req.body.fname,
-        lname: req.body.lname,
+        userName: req.body.username,
+        firstName: req.body.fname,
+        lastName: req.body.lname,
         email: email,
         passwordDigest: hash
       }

@@ -6,7 +6,7 @@
 
   <h1>
   <% if(user) { %>
-   Welcome, <%= user.fname %> <% user.lname %>
+   Welcome, <%= user.firstName %> <% user.lastName %>
  <% } else { %> 
   Welcome, Guest
   <% } %>
@@ -24,24 +24,39 @@
      <button type="submit">Search</button>
   </form>
 
-  <% console.log("events = ", events) %>
-  <% if (events) {  %>
-    
-    <% events.forEach(function(event) { %>
-      <div class="event-block">
-        <P class="event-title"><%= event.title %></p>
-        <p class="event-item"><%= event.start_time %> to <%= event.stop_time %></p>
-        <p class="event-item"><%- event.description %></p>
-        <p class="event-item"><%= event.venue_name %><br/>
-                            <%= event.venue_address %></p>
+  <% if (typeof events !== 'undefined') { %>
+ 
 
+    <% if (events) {  %>
+      
+      <% events.forEach(function(event) { %>
+        <div class="event-block">
+          <P class="event-title"><%= event.title %></p>
+          <p class="event-item"><%= event.start_time %> to <%= event.stop_time %></p>
+          <p class="event-item"><%- event.description %></p>
+          <p class="event-item"><%= event.venue_name %><br/>
+                              <%= event.venue_address %></p>
 
-      </div>
-    <% }) %>
-  <% }  else { %>
-    <h1>No Results found for this search</h1>
-    <% } %>
+         <form action="/event/rsvp" method="post" >
+           <input type="hidden" name="eventful_id" value="<%= event.id %>">
+           <input type="hidden" name="title" value="<%= event.title %>">
+           <input type="hidden" name="latitude" value="<%= event.latitude %>">
+            <input type="hidden" name="longitude" value="<%= event.longitude %>">
+           <input type="hidden" name="start_time" value="<%= event.start_time %>">
+           <input type="hidden" name="end_time" value="<%= event.stop_time %>">
+            <input type="hidden" name="venue_name" value="<%= event.venue_name %>">
+           <input type="hidden" name="venue_address" value="<%= event.venue_address %>">
+            
+             <button type="submit">RSVP</button>
+          </form>
 
+        </div>
+      <% }) %>
+    <% }  else { %>
+      <h1>No Results found for this search</h1>
+      <% } %>
+
+  <% } %>
 
 </body>
 </html>

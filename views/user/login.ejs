@@ -2,6 +2,12 @@
 <html>
 <% include ../partials/head %>
 <body>
+  <% include ../partials/header %>
+
+  <% if ( (typeof message !== 'undefined') && message) { %>
+    <h1><%= message %></h1>
+  <% } %>
+
   <form action="/user/login" method="post">
     <label for="">Email:</label>
     <input type="text" name="email"><br>

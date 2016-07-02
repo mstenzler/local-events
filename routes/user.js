@@ -15,7 +15,7 @@ router.get('/login', function(req,res) {
 });
 
 router.post('/login', loginUser,function(req,res) {
-  console.log(res.user);
+  console.log("Logging in. res.user = ", res.user);
   req.session.user = res.user;
 
   req.session.save(function(err) {

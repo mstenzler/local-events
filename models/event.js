@@ -6,7 +6,7 @@ const eventful = require('eventful-node');
 const client = new eventful.Client(eventful_key);
 const request = require('request');
 
-const DEFAULT_PAGE_SIZE = 1;
+const DEFAULT_PAGE_SIZE = 40;
 const API_URL = 'http://api.evdb.com/json/events/search'
 
 function categories() {
@@ -84,29 +84,44 @@ function searchEvent(req,res,next) {
   });
 }
 
-function searchEvent_old(req,res,next) {
-  let category = req.query.category;
+//db.collection.update(query, update, {upsert: true})
 
-  client.searchEvents({ keywords: 'music' }, function(err, data){
-    if(err){
-      return console.error(err);
-    }  
-
-    console.log('Recieved ' + data.search.total_items + ' events');
-    //console.log("Events = ", data.search.events.event);
-    //console.log(data);
-  
-    console.log('Event listings: ');
-  
-    //print the title of each event 
-    //for(var i in data.search.events){
-    for(let i=0; i< data.search.events.event.length; i++) {
-      console.log(" i = ", i);
-      console.log(data.search.events.event[i].title);
+var params = {
+  '$set': {
+    county: 'Pierce',
+    state: 'WA'
+  },
+  '$push': {
+    zips: {
+      '$each': ['98499',
+      '98499']
     }
-    res.events = data.search.events.event;
-    next()
-  });
+  }
 }
+function saveEvent(req, res, next) {
+  MongoClient.connect(dbConnection, function(err, db) {
+    //console.log("user id = ", req.session.user.id);
+    let eventInfo = {
+      '$set': {
+        eventfulId: req.body.eventful_id,
+        title: req.body.title,
+        description: req.body.description,
+        latitude: req.body.latitude,
+        longitude: req.body.longitude,
+        startTime: req.body.start_time,
+        endTime: req.body.end_time,
+        venueName: req.body.venue_name,
+        venueAddress: req.body.venue_address
+      },
+      "$addToSet": { "rsvps" :  "4543645647" } 
+    }
+   // db.collection('events').insertOne(userInfo, function(err, result) {
+    db.collection('events').update({eventfulId: eventInfo.eventfulId}, eventInfo, 
+      {upsert: true}, function(err, result) {
+      if(err) throw err;
+      next();
+    });
+  });
 
-module.exports = { searchEvent, categories }
+} 
+module.exports = { searchEvent, saveEvent, categories }

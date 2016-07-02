@@ -11,13 +11,14 @@ const eventRoute       = require('./routes/event');
 
 const app             = express();
 const port            = process.env.PORT || process.argv[2] || 3000
+const maxAgeHours     = 24;
 
 // Adding session as a middleware
 app.use(session({
   saveUninitialized: true,
   resave: true,
   secret: 'sooopersekret',
-  cookie: {maxAge: 60000}
+  cookie: {maxAge: 3600000 * maxAgeHours}
 }));
 
 // Adding Method override to allow our form to delete
