@@ -13,6 +13,10 @@ const app             = express();
 const port            = process.env.PORT || process.argv[2] || 3000
 const maxAgeHours     = 24;
 
+app.locals.pluralize = function(num, single, plural) {
+    return num + " " +(num > 1 ? plural : single);
+  };
+
 // Adding session as a middleware
 app.use(session({
   saveUninitialized: true,

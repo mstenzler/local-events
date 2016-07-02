@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <% include ../partials/head %>
+<body>
+  <% include ../partials/header %>
+
+ <h1>Popuar Events</h1>
+
+ <% if (typeof events !== 'undefined') { %>
+ 
+    <% if (events) {  %>
+      
+      <% events.forEach(function(event) { %>
+        <div class="event-block">
+          <P class="event-title"><%= event.title %></p>
+          <p class="event-item"><%= event.startTime %> to <%= event.stopTime %></p>
+          <p class="event-item"><%- event.description %></p>
+          <p class="event-item"><%= event.venueName %><br/>
+                              <%= event.venueAddress %></p>
+          <p><%= pluralize(event.rsvps.length, 'person', 'people') %> going</p>
+
+         <form action="/event/rsvp" method="post" >
+           <input type="hidden" name="eventful_id" value="<%= event.id %>">
+           <input type="hidden" name="title" value="<%= event.title %>">
+           <input type="hidden" name="latitude" value="<%= event.latitude %>">
+            <input type="hidden" name="longitude" value="<%= event.longitude %>">
+           <input type="hidden" name="start_time" value="<%= event.start_time %>">
+           <input type="hidden" name="end_time" value="<%= event.stop_time %>">
+            <input type="hidden" name="venue_name" value="<%= event.venue_name %>">
+           <input type="hidden" name="venue_address" value="<%= event.venue_address %>">
+            
+             <button type="submit">RSVP</button>
+          </form>
+
+        </div>
+      <% }) %>
+    <% }  else { %>
+      <h1>No events listed</h1>
+      <% } %>
+
+  <% } %>
+
+</body>
+</html>

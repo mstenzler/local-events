@@ -98,6 +98,7 @@ var params = {
     }
   }
 }
+
 function saveEvent(req, res, next) {
   MongoClient.connect(dbConnection, function(err, db) {
     //console.log("user id = ", req.session.user.id);
@@ -124,4 +125,16 @@ function saveEvent(req, res, next) {
   });
 
 } 
-module.exports = { searchEvent, saveEvent, categories }
+
+function getEvents(req, res, next) {
+  MongoClient.connect(dbConnection, function(err, db) {
+    db.collection('events').find().toArray(function(err, result) {
+      if(err) throw err;
+      console.log("eventList = ", result);
+      res.eventList = result;
+      next();
+    });
+  });
+} 
+
+module.exports = { searchEvent, getEvents, saveEvent, categories }
