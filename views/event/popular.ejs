@@ -6,6 +6,8 @@
  
  <h1>Popuar Events</h1>
 
+ <div id="popular-events">
+
  <% if (typeof events !== 'undefined') { %>
  
     <% if (events) {  %>
@@ -20,23 +22,13 @@
           <p><%= pluralize(event.rsvps.length, 'person', 'people') %> going</p>
 
          <form action="/event/rsvp" method="post" >
-           <% if (user) { %>
-            <input type="hidden" name="is_rsvp" value="<%= isRsvp(event, user) %>">
-          <% } else { %>
-            <input type="hidden" name="is_rsvp" value="0">
-          <% } %>
-           <input type="hidden" name="eventful_id" value="<%= event.eventful_id %>">
-           <input type="hidden" name="title" value="<%= event.title %>">
-           <input type="hidden" name="latitude" value="<%= event.latitude %>">
-            <input type="hidden" name="longitude" value="<%= event.longitude %>">
-           <input type="hidden" name="start_time" value="<%= event.startTime %>">
-           <input type="hidden" name="end_time" value="<%= event.stopTime %>">
-            <input type="hidden" name="venue_name" value="<%= event.venueName %>">
-           <input type="hidden" name="venue_address" value="<%= event.venueAddress %>">
+          <input type="hidden" name="event_id" value="<%= event['_id'] %>">
 
-           <% if (user) { %>            
-             <button type="submit"><%= isRsvp(event,user) ? "UNRSVP" : "RSVP" %></button>
+          <% if (isRsvp(event,user)) { %>
+            <input type="hidden" name="rsvp_type" value="unrsvp">
+             <button type="submit">UNRSVP</button>
            <% } else { %>
+             <input type="hidden" name="rsvp_type" value="rsvp">
              <button type="submit">RSVP</button>
            <% } %>
 
@@ -49,6 +41,7 @@
       <% } %>
 
   <% } %>
+  </div>
 
 </body>
 </html>

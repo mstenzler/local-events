@@ -142,6 +142,49 @@ function saveEvent(req, res, next) {
 
 } 
 
+function rsvp(req, res, next) {
+
+  if (!req.session.user) {
+    throw "Trying to save event without a logged in user";
+  }
+  if (!req.body.event_id) {
+    throw "No event_id passed in post params";
+  }
+  let userIdObject = new ObjectID(req.session.user['_id']);
+  let eventId      = new ObjectID(req.body.event_id);
+  let rsvpType = req.body.rsvp_type || 'rsvp';
+  let eventInfo;
+  if (rsvpType === 'unrsvp') {
+    eventInfo = {
+      "$pull": { "rsvps" : userIdObject } 
+    }
+  }
+  else {
+    eventInfo = {
+      "$addToSet": { "rsvps" : userIdObject } 
+    }
+  }
+  //let mongoCommand = (rsvpType === 'unrsvp' ? '$pull' : '$addToSet');
+  //console.log("userIdObject = ", userIdObject);
+  //console.log('req.body = ', req.body);
+
+  MongoClient.connect(dbConnection, function(err, db) {
+    // let eventInfo = {
+    //   `${mongoCommand}`: { "rsvps" : userIdObject } 
+    // }
+    console.log("eventInfo = ", eventInfo);
+   // db.collection('events').insertOne(userInfo, function(err, result) {
+    db.collection('events').update({_id: eventId}, eventInfo, 
+      {upsert: true}, function(err, result) {
+      if(err) throw err;
+      console.log("result = ", result);
+      res.result = result;
+      next();
+    });
+  });
+
+} 
+
 function getEvents(req, res, next) {
   MongoClient.connect(dbConnection, function(err, db) {
     db.collection('events').find().toArray(function(err, result) {
@@ -172,4 +215,4 @@ function getMyEvents(req, res, next) {
 } 
 
 
-module.exports = { searchEvent, getEvents, saveEvent, getMyEvents, categories }
+module.exports = { searchEvent, getEvents, saveEvent, rsvp, getMyEvents, categories }

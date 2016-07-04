@@ -1,6 +1,7 @@
 const router             = require('express').Router();
 const { searchEvent, 
-        saveEvent, 
+        saveEvent,
+        rsvp,
         getEvents, 
         getMyEvents,
         categories }     = require('../models/event');
@@ -32,6 +33,10 @@ router.post('/rsvp', loginCheck, saveEvent, function(req,res) {
 });
 
 router.post('/api/rsvp', apiLoginCheck, saveEvent, function(req,res) {
+   res.json(res.result)
+});
+
+router.post('/api/updatersvp', apiLoginCheck, rsvp, function(req,res) {
    res.json(res.result)
 });
 

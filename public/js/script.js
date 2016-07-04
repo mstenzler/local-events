@@ -84,6 +84,55 @@ function rsvp(e) {
 
 }
 
+
+function updateRsvp(e) {
+  e.preventDefault();
+  let $button = $(e.target);
+  debug("$button = ", $button);
+  let eventId = $button.siblings("input[name='event_id']").val();
+  debug("eventId = ", eventId);
+  let $rsvpTypeInput = $button.siblings("input[name='rsvp_type']");
+  let rsvpType = $rsvpTypeInput.val();
+
+  if (!eventId) {
+    alert("No eventful id for this event!");
+    return;
+  }
+
+  let data = {
+    event_id: eventId,
+    rsvp_type: rsvpType
+  } 
+
+  console.log('rsvp dat = ', data);
+
+  $.ajax({
+    url: "/event/api/updatersvp",
+    data: data,
+    type: "POST",
+    dataType : "json",
+  })
+  .done(function( json ) {
+    console.log("POST SUCCESS! json = ", json);
+    if (rsvpType === 'unrsvp') {
+      $button.text('RSVP');
+      $rsvpTypeInput.val('rsvp');
+    } else {
+      $button.text('UNRSVP');
+      $rsvpTypeInput.val('unrsvp');
+    }
+  })
+  // Code to run if the request fails; the raw request and
+  // status codes are passed to the function
+  .fail(function( xhr, status, errorThrown ) {
+    alert( "Sorry, there was a problem!" );
+    console.log( "Error: ",  errorThrown );
+    console.log( "Status: ",  status );
+    console.dir( xhr );
+  }); 
+
+}
+
 function getSearchResults(e) {
   e.preventDefault();
   var category = $('#category-selector').val();
@@ -124,16 +173,19 @@ function getSearchResults(e) {
 $(document).ready(function() {
   console.log('loaded');
 
-  $('.testButton').on('click', function(e) {
-    var args = {
-      templateData: { name: 'FOOBAR!!!!' },
-      template: "/templates/event_list.ejs",
-      displayTag: '#testDiv'
-    }
-    showTemplate(args);
-  })
+  // $('.testButton').on('click', function(e) {
+  //   var args = {
+  //     templateData: { name: 'FOOBAR!!!!' },
+  //     template: "/templates/event_list.ejs",
+  //     displayTag: '#testDiv'
+  //   }
+  //   showTemplate(args);
+  // })
 
   $('#search-button').on('click', getSearchResults);
 
   $('#search-results').on('click', rsvp);
+
+  $('#popular-events').on('click', updateRsvp);
+
 });
