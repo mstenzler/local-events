@@ -153,5 +153,23 @@ function getEvents(req, res, next) {
   });
 } 
 
+function getMyEvents(req, res, next) {
+  if (!req.session.user) {
+    res.myEvents = [];
+    next();
+  } else {
+    let userIdObject = new ObjectID(req.session.user['_id']);
 
-module.exports = { searchEvent, getEvents, saveEvent, categories }
+    MongoClient.connect(dbConnection, function(err, db) {
+      db.collection('events').find({rsvps: userIdObject}).toArray(function(err, result) {
+        if(err) throw err;
+        //console.log("eventList = ", result);
+        res.myEvents = result;
+        next();
+      });
+    });
+  }
+} 
+
+
+module.exports = { searchEvent, getEvents, saveEvent, getMyEvents, categories }

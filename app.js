@@ -7,7 +7,8 @@ const session         = require('express-session');
 const methodOverride  = require('method-override');
 const homeRoute       = require('./routes/home');
 const userRoute       = require('./routes/user');
-const eventRoute       = require('./routes/event');
+const eventRoute      = require('./routes/event');
+const { ObjectID }    = require('mongodb');
 
 const app             = express();
 const port            = process.env.PORT || process.argv[2] || 3000
@@ -17,6 +18,19 @@ const maxAge          = maxAgeHours * 3600000;
 app.locals.pluralize = function(num, single, plural) {
     return num + " " +(num > 1 ? plural : single);
   };
+
+app.locals.isRsvp = function(event, user) {
+  console.log('IN isRsvp');
+  if (! (user && user['_id']) )  {
+    console.log('NO USER or user[_id]');
+    return false;
+  } else {
+    let matching = event.rsvps.filter(function(obj) {
+      return (obj.toString() === user['_id']);
+    })
+    return (matching.length > 0);
+  }
+};
 
 // Adding session as a middleware
 app.use(session({
