@@ -4,18 +4,7 @@
 <body>
   <% include ./partials/header %>
 
-  <h1>
-  <% if(user) { %>
-   Welcome, <%= user.firstName %> <% user.lastName %>
- <% } else { %> 
-  Welcome, Guest
-  <% } %>
-  </h1>
-
-  <button type="submit" class="testButton">Test</button>
-
-  <div id="testDiv">
-  </div>
+<h1>Search events by category and location</h1>
 
  <form action="#" method="post" id="eventSearchForm" >
     <select class="browser-default" name="category" id="category-select">

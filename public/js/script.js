@@ -164,9 +164,9 @@ function getSearchResults(e) {
     console.dir( xhr );
   })
   // Code to run regardless of success or failure;
-  .always(function( xhr, status ) {
-    alert( "The request is complete!" );
-  });
+  // .always(function( xhr, status ) {
+  //   alert( "The request is complete!" );
+  // });
 
 } 
 
