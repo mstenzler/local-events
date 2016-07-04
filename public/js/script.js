@@ -71,6 +71,8 @@ function rsvp(e) {
   })
   .done(function( json ) {
     console.log("POST SUCCESS! json = ", json);
+    let $block = $button.closest('.event-block');
+    $block.remove();
     
   })
   // Code to run if the request fails; the raw request and
@@ -135,7 +137,7 @@ function updateRsvp(e) {
 
 function getSearchResults(e) {
   e.preventDefault();
-  var category = $('#category-selector').val();
+  var category = $('#category-select').val();
   var location = $('#location-input').val();
   console.log(`In getSearchResults, category = ${category}, location = ${location}`);
   $.ajax({

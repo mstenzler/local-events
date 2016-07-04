@@ -4,20 +4,31 @@
   background-image: -webkit-linear-gradient(grey, lightgrey);
   background-image: -o-linear-gradient(grey, lightgrey);
   background-image: linear-gradient(grey, lightgrey);
+  text-align: right;
 }
 
 .header li {
   list-style-type: none;
   display: inline-block;
+  padding: 0 5px;
 }
 
 .nav {
   display: inline-block;
+  font-size: 1.2em;
 }
 
 .content {
   width: 95%;
   margin: 0 auto;
+}
+
+.search-form {
+  text-align: center;
+}
+
+.centered {
+  text-align: center;
 }
 
 .event-block {
@@ -26,4 +37,19 @@
   border-radius: 10px;
   margin: 2em auto;
   padding: 2em;
+}
+
+optgroup {
+  font-size: 16px;
+}
+
+.event-title {
+  text-align: center;
+}
+
+.rsvp-button {
+  font-size: 2em;
+  display: block;
+  width: 5em;
+  margin: 0 auto;
 }

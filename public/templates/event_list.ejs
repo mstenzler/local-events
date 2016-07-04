@@ -4,12 +4,15 @@
     <% if (events) {  %>
       
       <% events.forEach(function(event) { %>
+        
         <div class="event-block">
-          <P class="event-title"><%= event.title %></p>
-          <p class="event-item"><%= event.start_time %> to <%= event.stop_time %></p>
+          <h2 class="event-title"><%= event.title %></h2>
           <p class="event-item"><%= event.description %></p>
-          <p class="event-item"><%= event.venue_name %><br/>
-                              <%= event.venue_address %></p>
+          <p class="event-item"><strong>Date:</strong><br/>
+            <%= event.start_time %> <% if (event.stop_time) { %> to <%= event.stop_time %><% } %></p>
+          <p class="event-item"><strong>Venue:</strong><br/>
+          <%= event.venue_name %><br/>
+              <%= event.venue_address %></p>
 
          <form action="#" method="post" >
            <input type="hidden" name="eventful_id" value="<%= event.id %>">
@@ -22,7 +25,7 @@
             <input type="hidden" name="venue_name" value="<%= event.venue_name %>">
            <input type="hidden" name="venue_address" value="<%= event.venue_address %>">
             
-             <button type="submit">RSVP</button>
+             <button type="submit" class="rsvp-button">RSVP</button>
           </form>
 
         </div>

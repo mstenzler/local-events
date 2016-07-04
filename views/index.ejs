@@ -4,25 +4,28 @@
 <body>
   <% include ./partials/header %>
 
- <div class="content">
+ <div class="search-form">
 
  <h1>Search events by category and location</h1>
 
  <form action="#" method="post" id="eventSearchForm" >
     <select class="browser-default" name="category" id="category-select">
+      <optgroup>
       <option value="" selected>Choose a category</option>
       <% categories.forEach( function(category){ %>
       <option value="<%=category.key%>" > <%=category.desc%></option>
       <% }) %>
+      </optgroup>
     </select>
     <input type="text" name="location" placeholder="Location" id="location-input">
     
      <button type="submit" id="search-button">Search</button>
   </form>
 
+</div>
+
   <div id="search-results">
   </div>
 
-</div>
 </body>
 </html>

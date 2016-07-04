@@ -4,43 +4,43 @@
 <body>
   <% include ../partials/header %>
  
- <h1>Popuar Events</h1>
+ <h1 class="centered">Popuar Events</h1>
 
  <div id="popular-events">
 
- <% if (typeof events !== 'undefined') { %>
+ <% if (typeof events !== 'undefined' && events && events.length > 0) { %>
  
-    <% if (events) {  %>
-      
-      <% events.forEach(function(event) { %>
-        <div class="event-block">
-          <P class="event-title"><%= event.title %></p>
-          <p class="event-item"><%= event.startTime %> to <%= event.stopTime %></p>
-          <p class="event-item"><%- event.description %></p>
-          <p class="event-item"><%= event.venueName %><br/>
-                              <%= event.venueAddress %></p>
-          <p><%= pluralize(event.rsvps.length, 'person', 'people') %> going</p>
+    <% events.forEach(function(event) { %>
+      <div class="event-block">
+        <h2 class="event-title"><%= event.title %></h2>
+        <p class="event-item"><%- event.description %></p>
+        <p class="event-item"><strong>Date:</strong><br/>
+          <%= event.startTime %> <% if (event.stopTime) { %> to <%= event.stopTime %><% } %></p>
+        <p class="event-item"><strong>Venue:</strong><br/>
+          <%= event.venueName %><br/>
+          <%= event.venueAddress %></p>
 
-         <form action="/event/rsvp" method="post" >
-          <input type="hidden" name="event_id" value="<%= event['_id'] %>">
+        <p><%= pluralize(event.rsvps.length, 'person', 'people') %> going</p>
 
-          <% if (isRsvp(event,user)) { %>
-            <input type="hidden" name="rsvp_type" value="unrsvp">
-             <button type="submit">UNRSVP</button>
-           <% } else { %>
-             <input type="hidden" name="rsvp_type" value="rsvp">
-             <button type="submit">RSVP</button>
-           <% } %>
+       <form action="/event/rsvp" method="post" >
+        <input type="hidden" name="event_id" value="<%= event['_id'] %>">
 
-          </form>
+        <% if (isRsvp(event,user)) { %>
+          <input type="hidden" name="rsvp_type" value="unrsvp">
+           <button type="submit" class="rsvp-button">UNRSVP</button>
+         <% } else { %>
+           <input type="hidden" name="rsvp_type" value="rsvp">
+           <button type="submit" class="rsvp-button">RSVP</button>
+         <% } %>
 
-        </div>
-      <% }) %>
-    <% }  else { %>
-      <h1>No events listed</h1>
-      <% } %>
+        </form>
 
-  <% } %>
+      </div>
+    <% }) %>
+  <% }  else { %>
+    <h1 class="centered">No events listed</h1>
+    <% } %>
+
   </div>
 
 </body>
