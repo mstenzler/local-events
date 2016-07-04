@@ -15,6 +15,11 @@
   display: inline-block;
 }
 
+.content {
+  width: 95%;
+  margin: 0 auto;
+}
+
 .event-block {
   width: 80%;
   background-color: #bbdefb;
