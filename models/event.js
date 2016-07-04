@@ -1,11 +1,13 @@
 const { MongoClient } = require('mongodb');
-const { ObjectID } = require('mongodb');
-const dbConnection = 'mongodb://localhost:27017/local_events';
-const eventful_key = process.env.EVENTFUL_KEY;
+const { ObjectID }    = require('mongodb');
+const dbConnection    = 'mongodb://localhost:27017/local_events';
+const eventful_key    = process.env.EVENTFUL_KEY;
 
-const eventful = require('eventful-node');
-const client = new eventful.Client(eventful_key);
-const request = require('request');
+const eventful        = require('eventful-node');
+const client          = new eventful.Client(eventful_key);
+const request         = require('request');
+var merge             = require('merge'), original, cloned;
+
 
 const DEFAULT_PAGE_SIZE = 40;
 const API_URL = 'http://api.evdb.com/json/events/search'
@@ -45,9 +47,9 @@ function categories() {
 }
 
 function searchEvent(req,res,next) {
-  let queryParams = req.body || req.query;
+  console.log('req.body = ', req.body);
+  let queryParams = merge(req.body, req.query);
   let data;
-  //let numItems;
   queryParams.app_key = eventful_key;
   if (!queryParams.page_size) {
     queryParams.page_size = DEFAULT_PAGE_SIZE;
@@ -66,14 +68,14 @@ function searchEvent(req,res,next) {
         console.log(response.statusCode, data);
         //data = JSON.parse(body);
         //numItems = data.total_items;
-        //
+        console.log("data = ", data);
         if (data.events.event) {
           if (data.events.event.length) {
-            console.log("IS ARRAY!!!");
+            //console.log("IS ARRAY!!!");
             res.events = data.events.event;
           }
           else {
-            console.log("++===== NOT ARRAY=====")
+            //console.log("++===== NOT ARRAY=====")
             res.events = [data.events.event]
           }
         }
@@ -107,8 +109,12 @@ function saveEvent(req, res, next) {
     if (!req.session.user) {
       throw "Trying to save event without a logged in user";
     }
+    if (!req.body.eventful_id) {
+      throw "No eventful_id passed in post params";
+    }
     let userIdObject = new ObjectID(req.session.user['_id']);
     console.log("userIdObject = ", userIdObject);
+    console.log('req.body = ', req.body);
     let eventInfo = {
       '$set': {
         eventfulId: req.body.eventful_id,
@@ -123,10 +129,13 @@ function saveEvent(req, res, next) {
       },
       "$addToSet": { "rsvps" : userIdObject } 
     }
+    console.log("eventInfo = ", eventInfo);
    // db.collection('events').insertOne(userInfo, function(err, result) {
     db.collection('events').update({eventfulId: eventInfo.eventfulId}, eventInfo, 
       {upsert: true}, function(err, result) {
       if(err) throw err;
+      console.log("result = ", result);
+      res.result = result;
       next();
     });
   });
@@ -143,5 +152,6 @@ function getEvents(req, res, next) {
     });
   });
 } 
+
 
 module.exports = { searchEvent, getEvents, saveEvent, categories }

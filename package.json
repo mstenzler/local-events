@@ -23,6 +23,7 @@
     "eventful-node": "^1.1.1",
     "express": "^4.14.0",
     "express-session": "^1.13.0",
+    "merge": "^1.2.0",
     "method-override": "^2.3.6",
     "mongodb": "^2.1.18",
     "morgan": "^1.7.0",

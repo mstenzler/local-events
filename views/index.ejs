@@ -12,52 +12,25 @@
   <% } %>
   </h1>
 
- <form action="/event/search" method="post" id="eventSearchForm" >
-    <select class="browser-default" name="category">
+  <button type="submit" class="testButton">Test</button>
+
+  <div id="testDiv">
+  </div>
+
+ <form action="#" method="post" id="eventSearchForm" >
+    <select class="browser-default" name="category" id="category-select">
       <option value="" selected>Choose a category</option>
       <% categories.forEach( function(category){ %>
       <option value="<%=category.key%>" > <%=category.desc%></option>
       <% }) %>
     </select>
-    <input type="text" name="location" placeholder="Location">
+    <input type="text" name="location" placeholder="Location" id="location-input">
     
-     <button type="submit">Search</button>
+     <button type="submit" id="search-button">Search</button>
   </form>
 
-  <% if (typeof events !== 'undefined') { %>
- 
-
-    <% if (events) {  %>
-      
-      <% events.forEach(function(event) { %>
-        <div class="event-block">
-          <P class="event-title"><%= event.title %></p>
-          <p class="event-item"><%= event.start_time %> to <%= event.stop_time %></p>
-          <p class="event-item"><%- event.description %></p>
-          <p class="event-item"><%= event.venue_name %><br/>
-                              <%= event.venue_address %></p>
-
-         <form action="/event/rsvp" method="post" >
-           <input type="hidden" name="eventful_id" value="<%= event.id %>">
-           <input type="hidden" name="title" value="<%= event.title %>">
-           <input type="hidden" name="description" value="<%= event.description %>">
-           <input type="hidden" name="latitude" value="<%= event.latitude %>">
-           <input type="hidden" name="longitude" value="<%= event.longitude %>">
-           <input type="hidden" name="start_time" value="<%= event.start_time %>">
-           <input type="hidden" name="end_time" value="<%= event.stop_time %>">
-            <input type="hidden" name="venue_name" value="<%= event.venue_name %>">
-           <input type="hidden" name="venue_address" value="<%= event.venue_address %>">
-            
-             <button type="submit">RSVP</button>
-          </form>
-
-        </div>
-      <% }) %>
-    <% }  else { %>
-      <h1>No Results found for this search</h1>
-      <% } %>
-
-  <% } %>
+  <div id="search-results">
+  </div>
 
 </body>
 </html>
