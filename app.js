@@ -20,13 +20,13 @@ app.locals.pluralize = function(num, single, plural) {
   };
 
 app.locals.isRsvp = function(event, user) {
-  console.log('IN isRsvp');
-  if (! (user && user['_id']) )  {
-    console.log('NO USER or user[_id]');
+  //console.log('IN isRsvp');
+  if (! (user && user.userName) )  {
+    console.log('NO USER or user.userName');
     return false;
   } else {
     let matching = event.rsvps.filter(function(obj) {
-      return (obj.toString() === user['_id']);
+      return (obj.userName === user.userName);
     })
     return (matching.length > 0);
   }

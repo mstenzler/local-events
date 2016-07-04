@@ -20,7 +20,16 @@
           <%= event.venueName %><br/>
           <%= event.venueAddress %></p>
 
-        <p><%= pluralize(event.rsvps.length, 'person', 'people') %> going</p>
+        <p><%= pluralize(event.rsvps.length, 'person', 'people') %> going:</p>
+
+        <% if (event.rsvps.length > 0) { %>
+          <div class="attendee-list">
+          <% event.rsvps.forEach(function(person) { %>
+            <span class="attendee-item"><%= person.userName %></span>
+          <% }) %>
+          </div>
+
+        <% } %>
 
        <form action="/event/rsvp" method="post" >
         <input type="hidden" name="event_id" value="<%= event['_id'] %>">

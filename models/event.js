@@ -21,7 +21,7 @@ function categories() {
   {key:"family_fun_kids", desc:"Kids & Family"},
   {key:"festivals_parades", desc:"Festivals"},
   {key:"movies_film", desc:"Film"},
-  {key:"food", desc:"Food &amp; Wine"},
+  {key:"food", desc:"Food & Wine"},
   {key:"fundraisers", desc:"Fundraising & Charity"},
   {key:"art", desc:"Art Galleries & Exhibits"},
   {key:"support", desc:"Health & Wellness"},
@@ -66,10 +66,8 @@ function searchEvent(req,res,next) {
         console.log(error);
       } else {
         console.log(response.statusCode, data);
-        //data = JSON.parse(body);
-        //numItems = data.total_items;
-        console.log("data = ", data);
-        if (data.events.event) {
+       // console.log("data = ", data);
+        if (data.events && data.events.event) {
           if (data.events.event.length) {
             //console.log("IS ARRAY!!!");
             res.events = data.events.event;
@@ -87,21 +85,6 @@ function searchEvent(req,res,next) {
   });
 }
 
-//db.collection.update(query, update, {upsert: true})
-
-var params = {
-  '$set': {
-    county: 'Pierce',
-    state: 'WA'
-  },
-  '$push': {
-    zips: {
-      '$each': ['98499',
-      '98499']
-    }
-  }
-}
-
 function saveEvent(req, res, next) {
   MongoClient.connect(dbConnection, function(err, db) {
     //console.log("user id = ", req.session.user.id);
@@ -113,6 +96,7 @@ function saveEvent(req, res, next) {
       throw "No eventful_id passed in post params";
     }
     let userIdObject = new ObjectID(req.session.user['_id']);
+    let user = req.session.user;
     console.log("userIdObject = ", userIdObject);
     console.log('req.body = ', req.body);
     let eventInfo = {
@@ -127,7 +111,7 @@ function saveEvent(req, res, next) {
         venueName: req.body.venue_name,
         venueAddress: req.body.venue_address
       },
-      "$addToSet": { "rsvps" : userIdObject } 
+      "$addToSet": { "rsvps" : { "userId": userIdObject, "userName": user.userName } }  
     }
     console.log("eventInfo = ", eventInfo);
    // db.collection('events').insertOne(userInfo, function(err, result) {
@@ -154,6 +138,7 @@ function rsvp(req, res, next) {
   let eventId      = new ObjectID(req.body.event_id);
   let rsvpType = req.body.rsvp_type || 'rsvp';
   let eventInfo;
+  let user = req.session.user;
   if (rsvpType === 'unrsvp') {
     eventInfo = {
       "$pull": { "rsvps" : userIdObject } 
@@ -161,23 +146,17 @@ function rsvp(req, res, next) {
   }
   else {
     eventInfo = {
-      "$addToSet": { "rsvps" : userIdObject } 
+      "$addToSet": { "rsvps" : { "userId": userIdObject, "userName": user.userName } } 
     }
   }
-  //let mongoCommand = (rsvpType === 'unrsvp' ? '$pull' : '$addToSet');
-  //console.log("userIdObject = ", userIdObject);
-  //console.log('req.body = ', req.body);
 
   MongoClient.connect(dbConnection, function(err, db) {
-    // let eventInfo = {
-    //   `${mongoCommand}`: { "rsvps" : userIdObject } 
-    // }
     console.log("eventInfo = ", eventInfo);
    // db.collection('events').insertOne(userInfo, function(err, result) {
     db.collection('events').update({_id: eventId}, eventInfo, 
       {upsert: true}, function(err, result) {
       if(err) throw err;
-      console.log("result = ", result);
+      //console.log("result = ", result);
       res.result = result;
       next();
     });
@@ -189,7 +168,7 @@ function getEvents(req, res, next) {
   MongoClient.connect(dbConnection, function(err, db) {
     db.collection('events').find().toArray(function(err, result) {
       if(err) throw err;
-      console.log("eventList = ", result);
+      //console.log("eventList = ", result);
       res.eventList = result;
       next();
     });

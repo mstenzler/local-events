@@ -1,3 +1,7 @@
+#search-button {
+  font-size: 1.3em;
+}
+
 .header {
   padding: 1em;
   margin-bottom: 5px;
@@ -27,6 +31,7 @@
   text-align: center;
 }
 
+
 .centered {
   text-align: center;
 }
@@ -52,4 +57,11 @@ optgroup {
   display: block;
   width: 5em;
   margin: 0 auto;
+}
+
+.attendee-item {
+  font-size: 1.2em;
+  border: 1px solid black;
+  padding: .5em;
+  display: inline-block;
 }
