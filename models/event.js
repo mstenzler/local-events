@@ -141,7 +141,7 @@ function rsvp(req, res, next) {
   let user = req.session.user;
   if (rsvpType === 'unrsvp') {
     eventInfo = {
-      "$pull": { "rsvps" : userIdObject } 
+      "$pull": { "rsvps" : { "userId": userIdObject, "userName": user.userName } } 
     }
   }
   else {
