@@ -1,6 +1,6 @@
 const { MongoClient } = require('mongodb');
 const { ObjectID }    = require('mongodb');
-const dbConnection    = 'mongodb://localhost:27017/local_events';
+const dbConnection    = process.env['MONGODB_URI'] || 'mongodb://localhost:27017/local_events';
 const eventful_key    = process.env.EVENTFUL_KEY;
 
 const eventful        = require('eventful-node');
