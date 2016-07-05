@@ -65,3 +65,13 @@ optgroup {
   padding: .5em;
   display: inline-block;
 }
+
+.auth-form {
+  font-size: 1.3em;
+  margin: 2em 1em;
+}
+
+.auth-button {
+  font-size: 1.4em;
+  margin: 1em 5px;
+}

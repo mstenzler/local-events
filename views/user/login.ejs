@@ -4,16 +4,19 @@
 <body>
   <% include ../partials/header %>
 
+<div class="centered">
   <% if ( (typeof message !== 'undefined') && message) { %>
     <h1><%= message %></h1>
   <% } %>
-
-  <form action="/user/login" method="post">
+  <form action="/user/login" method="post" class="auth-form">
     <label for="">Email:</label>
     <input type="text" name="email"><br>
     <label for="">Password:</label>
     <input type="password" name="password"><br>
-    <input type="submit" value="Login">
+    <button type="submit" value="Login" class="auth-button">Login</button>
   </form>
+
+  </div>
+
 </body>
 </html>
